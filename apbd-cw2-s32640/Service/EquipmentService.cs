@@ -1,3 +1,5 @@
+using apbd_cw2_s32640.Exeptions;
+
 namespace apbd_cw2_s32640.Service;
 
 public class EquipmentService : IEquipmentService
@@ -11,7 +13,8 @@ public class EquipmentService : IEquipmentService
 
     public Equipment getEquipemntById(int id)
     {
-        return _equipments[id];
+        return _equipments.FirstOrDefault(equipemnt => equipemnt.Id == id) 
+               ?? throw new EquipmentNotFound(id);
     }
 
     public List<Equipment> getAllEquipments()
