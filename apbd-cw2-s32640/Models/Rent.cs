@@ -7,8 +7,8 @@ public class Rent(Equipment equipment, User user, DateTime from, DateTime to)
     public int Id { get; } = _nextId++;
     public Equipment Equipment { get; set; } = equipment;
     public User User { get; set; } = user;
-    public DateTime From { get; set; }
-    public DateTime To { get; set; }
+    public DateTime From { get; set; } = from;
+    public DateTime To { get; set; } = to;
     public DateTime? ReturnedDate { get; private set; }
 
     public bool IsReturnedOnTime => ReturnedDate <= to && ReturnedDate != null;
@@ -25,6 +25,7 @@ public class Rent(Equipment equipment, User user, DateTime from, DateTime to)
         {
             var daysLater = (returnedDate - To).Days;
             Penalty = 5 * daysLater;
+            Console.WriteLine($"{Penalty} penalty applied for {daysLater} days late Id {Id}");
         }
     }
 }

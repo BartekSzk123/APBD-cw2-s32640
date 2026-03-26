@@ -5,7 +5,7 @@ namespace apbd_cw2_s32640.Service;
 public class RentService : IRentService
 {
     
-    private readonly List<Rent> _rents;
+    private readonly List<Rent> _rents = [];
     
     public void CreateRent(User user, Equipment equipment, DateTime from, DateTime to)
     {
@@ -23,6 +23,7 @@ public class RentService : IRentService
         
         var newRent = new Rent(equipment, user, from, to);
         _rents.Add(newRent);
+        equipment.Status = EquipmentStatus.UnAvailable;
         
     }
 
@@ -35,6 +36,7 @@ public class RentService : IRentService
         }
         
         rent.Return(returnedDate);
+        rent.Equipment.Status = EquipmentStatus.Available;
     }
 
     public List<Rent> GetUserRent(int userId)
@@ -50,5 +52,21 @@ public class RentService : IRentService
     public List<Rent> GetAll()
     {
         return _rents;
+    }
+
+    public void PrintReport()
+    {
+        int total = _rents.Count;
+        int active = _rents.Count(r => r.IsActive);
+        int overdue = _rents.Count(r => r.IsOverdue);
+        int returnedOnTime = _rents.Count(r => r.IsReturnedOnTime);
+        double totalPenalty = _rents.Sum(r => r.Penalty);
+
+        Console.WriteLine("===== REPORT =====");
+        Console.WriteLine($"Total rents: {total}");
+        Console.WriteLine($"Active rents: {active}");
+        Console.WriteLine($"Overdue rents: {overdue}");
+        Console.WriteLine($"Returned on time: {returnedOnTime}");
+        Console.WriteLine($"Total penalties: {totalPenalty}");
     }
 }

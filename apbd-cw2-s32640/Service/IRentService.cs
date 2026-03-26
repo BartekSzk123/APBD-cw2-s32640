@@ -7,4 +7,5 @@ public interface IRentService
     public List<Rent> GetUserRent(int userId);
     public List<Rent> GetAll();
     public List<Rent> GetOverdueRents();
+    public void PrintReport();
 }
